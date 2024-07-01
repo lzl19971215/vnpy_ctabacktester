@@ -59,7 +59,7 @@ class BacktesterEngine(BaseEngine):
 
     def register_datafeed(self, datafeed: BaseDatafeed):
         self.datafeed = datafeed
-        self.write_log(f"Datafeed registered!")
+        print(f"Datafeed registered!")
 
 
     def init_engine(self) -> None:
