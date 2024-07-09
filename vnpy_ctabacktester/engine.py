@@ -57,6 +57,10 @@ class BacktesterEngine(BaseEngine):
         # Optimization result
         self.result_values: list = None
 
+    def register_datafeed(self, datafeed: BaseDatafeed):
+        self.datafeed = datafeed
+        self.write_log("Datafeed registered!")
+
     def init_engine(self) -> None:
         """"""
         self.write_log("初始化CTA回测引擎")
