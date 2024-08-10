@@ -388,7 +388,8 @@ class BacktesterEngine(BaseEngine):
         vt_symbol: str,
         interval: str,
         start: datetime,
-        end: datetime
+        end: datetime,
+        **kwargs
     ) -> None:
         """
         执行下载任务
@@ -421,9 +422,9 @@ class BacktesterEngine(BaseEngine):
                     data: List[BarData] = self.main_engine.query_history(
                         req, contract.gateway_name
                     )
-                # Otherwise use RQData to query data
+                # Otherwise use datafeed to query data
                 else:
-                    data: List[BarData] = self.datafeed.query_bar_history(req, self.write_log)
+                    data: List[BarData] = self.datafeed.query_bar_history(req, self.write_log, **kwargs)
 
             if data:
                 if interval == "tick":
