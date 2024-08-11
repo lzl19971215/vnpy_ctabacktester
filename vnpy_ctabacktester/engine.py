@@ -61,14 +61,14 @@ class BacktesterEngine(BaseEngine):
         self.datafeed = datafeed
         self.write_log("Datafeed registered!")
 
-    def init_engine(self) -> None:
+    def init_engine(self, strategy_path: list[str] = []) -> None:
         """"""
         self.write_log("初始化CTA回测引擎")
 
         self.backtesting_engine = BacktestingEngine()
         # Redirect log from backtesting engine outside.
         self.backtesting_engine.output = self.write_log
-
+        self.strategy_path = strategy_path
         self.load_strategy_class()
         self.write_log("策略文件加载完成")
 
@@ -98,6 +98,9 @@ class BacktesterEngine(BaseEngine):
 
         path2: Path = Path.cwd().joinpath("strategies")
         self.load_strategy_class_from_folder(path2, "strategies")
+
+        for p in self.strategy_path:
+            self.load_strategy_class_from_folder(Path(p).joinpath("strategies"), "strategies")
 
     def load_strategy_class_from_folder(self, path: Path, module_name: str = "") -> None:
         """
