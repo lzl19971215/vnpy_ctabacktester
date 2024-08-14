@@ -1,7 +1,7 @@
 from ast import List
 import importlib
 import traceback
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Thread
 from pathlib import Path
 from inspect import getfile
@@ -157,7 +157,8 @@ class BacktesterEngine(BaseEngine):
         size: int,
         pricetick: float,
         capital: int,
-        setting: dict
+        setting: dict,
+        custom_interval=timedelta(seconds=0)
     ) -> None:
         """"""
         self.result_df = None
@@ -174,6 +175,7 @@ class BacktesterEngine(BaseEngine):
         engine.set_parameters(
             vt_symbol=vt_symbol,
             interval=interval,
+            custom_interval=custom_interval,
             start=start,
             end=end,
             rate=rate,
@@ -435,7 +437,7 @@ class BacktesterEngine(BaseEngine):
                 else:
                     self.database.save_bar_data(data)
 
-                self.write_log(f"{vt_symbol}-{interval}历史数据下载完成")
+                self.write_log(f"{vt_symbol}-{interval}历史数据下载完成, 数据量: {len(data)}")
             else:
                 self.write_log(f"数据下载失败，无法获取{vt_symbol}的历史数据")
         except Exception:
